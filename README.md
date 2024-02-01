@@ -15,3 +15,6 @@ Using veth pairs without a bridge:
 •	Directly connects two namespaces, providing communication between them.
 •	Requires creating additional pairs for connecting more namespaces.
 •	Can become less scalable and more complex as the number of connections increases.
+
+
+https://lazyninjadba.blogspot.com/2024/02/networking-using-linux-network.html
