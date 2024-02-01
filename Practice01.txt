@@ -1,8 +1,10 @@
+Task 01: Create two Namespaces and connect them using veth (vm)
+
 #Create Two Network Namespaces:
 sudo ip netns add ns1
 sudo ip netns add ns2
 
-# list the created network namespaces:
+#list the created network namespaces:
 sudo ip netns list
 
 #To remove a network namespace in Linux:
@@ -10,6 +12,12 @@ sudo ip netns delete ns1
 
 #Create a veth Pair:
 sudo ip link add veth1 type veth peer name veth2
+
+#To see the list of veth pairs on a Linux system
+ip link show type veth
+
+#To delete a veth pair on a Linux system
+sudo ip link delete veth1
 
 #Move Each End of the veth Pair to Respective Namespace:
 sudo ip link set veth1 netns ns1
@@ -34,5 +42,5 @@ sudo ip netns exec ns2 ip link
 	ip link: Display information about network interfaces.
 
 #We can test connectivity within the namespaces:
-sudo ip netns exec ns1 ping -c 1 192.168.1.2
-sudo ip netns exec ns2 ping -c 1 192.168.1.1
+sudo ip netns exec ns1 ping -c 2 192.168.1.2
+sudo ip netns exec ns2 ping -c 2 192.168.1.1
