@@ -1,0 +1,41 @@
+Task 02: Create two Namespaces and connect them using Linux bridge (vm/web)
+
+#Create Two Network Namespaces (ns1 and ns2):
+sudo ip netns add ns1
+sudo ip netns add ns2
+
+#Create veth Pairs (veth1 and veth2):
+sudo ip link add veth1 type veth peer name veth2
+
+#Move veth1 to ns1 and veth2 to ns2:
+sudo ip link set veth1 netns ns1
+sudo ip link set veth2 netns ns2
+
+#Create a Linux Bridge (br0):
+sudo ip link add br0 type bridge
+
+#Connect veth1 and veth2 to the Bridge:
+sudo ip link set veth1 master br0
+sudo ip link set veth2 master br0
+
+#Enable the Bridge (br0):
+sudo ip link set br0 up
+
+#This command shows information about network interfaces of type bridge.
+ip link show type bridge
+
+#To delete a bridge on a Linux system
+sudo ip link delete br0 type bridge
+
+
+#Configure IP Addresses within Each Namespace:
+sudo ip netns exec ns1 ip addr add 192.168.1.1/24 dev veth1
+sudo ip netns exec ns1 ip link set veth1 up
+
+sudo ip netns exec ns2 ip addr add 192.168.1.2/24 dev veth2
+sudo ip netns exec ns2 ip link set veth2 up
+
+#Now, ns1 and ns2 are connected via the Linux bridge br0.
+We can test connectivity within the namespaces:
+sudo ip netns exec ns1 ping -c 2 192.168.1.2
+sudo ip netns exec ns2 ping -c 2 192.168.1.1
